@@ -11,7 +11,7 @@ function App() {
     kp = keypoints
   }
 
-   const getJoints = () => {
+  const getJoints = () => {
     return kp;
   }
 

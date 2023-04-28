@@ -40,31 +40,31 @@ const getZRotation = (p1, p2) => {
 export default function Model(props) {
   let kp;
   const group = useRef()
-  const { nodes, materials } = useGLTF('../../../model.glb')
-
+  const { nodes, materials } = useGLTF('model.glb')
+  console.log(nodes);
   useFrame((state, delta) => {
     kp = props.getJoints()
+    if (kp) {
+      // Left arm & elbow
+      nodes.Ch36.skeleton.bones[7].rotation.y = getAngle(kp[5], kp[7], 0, 0, -1)
+      nodes.Ch36.skeleton.bones[9].rotation.x = getAngle(kp[7], kp[9], 0, 0, 1)
 
-    // Left arm & elbow
-    nodes.Ch36.skeleton.bones[7].rotation.y = getAngle(kp[5], kp[7], 0, 0, -1)
-    nodes.Ch36.skeleton.bones[9].rotation.x = getAngle(kp[7], kp[9], 0, 0, 1)
+      //Right arm & elbow
+      nodes.Ch36.skeleton.bones[31].rotation.y = getAngle(kp[8], kp[6], 0, 0, -1)
+      nodes.Ch36.skeleton.bones[33].rotation.x = getAngle(kp[10], kp[8], 0, 0, -1)
+      
+      // Left leg & knee
+      nodes.Ch36.skeleton.bones[55].rotation.z =  getAngle(kp[11], kp[13], (Math.PI/2), Math.PI, -1)
+      //nodes.Ch36.skeleton.bones[56].rotation.z = getAngle(kp[15], kp[13], (Math.PI/2), 0, -1)
 
-    //Right arm & elbow
-    nodes.Ch36.skeleton.bones[31].rotation.y = getAngle(kp[8], kp[6], 0, 0, -1)
-    nodes.Ch36.skeleton.bones[33].rotation.x = getAngle(kp[10], kp[8], 0, 0, -1)
-    
-    // Left leg & knee
-    nodes.Ch36.skeleton.bones[55].rotation.z =  getAngle(kp[11], kp[13], (Math.PI/2), Math.PI, -1)
-    //nodes.Ch36.skeleton.bones[56].rotation.z = getAngle(kp[15], kp[13], (Math.PI/2), 0, -1)
+      // Right leg & knee
+      nodes.Ch36.skeleton.bones[60].rotation.z =  getAngle(kp[12], kp[14], (Math.PI/2), Math.PI, -1)
+      //nodes.Ch36.skeleton.bones[61].rotation.z = getAngle(kp[16], kp[14], (Math.PI/2), 0, -1)
 
-    // Right leg & knee
-    nodes.Ch36.skeleton.bones[60].rotation.z =  getAngle(kp[12], kp[14], (Math.PI/2), Math.PI, -1)
-    //nodes.Ch36.skeleton.bones[61].rotation.z = getAngle(kp[16], kp[14], (Math.PI/2), 0, -1)
-
-    // Head
-    nodes.Ch36.skeleton.bones[5].rotation.y = getYRotation(kp[1], kp[2], kp[0])
-    nodes.Ch36.skeleton.bones[5].rotation.z = getZRotation(kp[1], kp[2])
-
+      // Head
+      nodes.Ch36.skeleton.bones[5].rotation.y = getYRotation(kp[1], kp[2], kp[0])
+      nodes.Ch36.skeleton.bones[5].rotation.z = getZRotation(kp[1], kp[2])
+    }
   })
 
 
@@ -78,4 +78,4 @@ export default function Model(props) {
   )
 }
 
-useGLTF.preload('../../../model.glb')
+useGLTF.preload('model.glb')
